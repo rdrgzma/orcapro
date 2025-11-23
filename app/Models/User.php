@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'company_id',
     ];
 
     /**
@@ -60,5 +61,20 @@ class User extends Authenticatable
             ->take(2)
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function budgets()
+    {
+        return $this->hasManyThrough(Budget::class, Company::class);
+    }
+
+    public function workOrders()
+    {
+        return $this->hasManyThrough(WorkOrder::class, Company::class);
     }
 }
